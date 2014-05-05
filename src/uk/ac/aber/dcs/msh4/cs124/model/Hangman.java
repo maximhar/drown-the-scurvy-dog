@@ -54,13 +54,12 @@ public abstract class Hangman implements GameModelInterface {
     public String getLetters() {
         //the set of letters tried is the set of all letters in the word intersected with the set of all letters tried
         // = charactersTried ∩ charactersExtant
-        StringBuilder intersectionBuilder = new StringBuilder();
-        HashSet<Character> intersection = new HashSet<Character>(this.charactersTried);
-        intersection.retainAll(this.charactersExtant);
-        for(Character c : intersection){
-            intersectionBuilder.append(c);
+        StringBuilder builder = new StringBuilder();
+        HashSet<Character> tried = new HashSet<Character>(this.charactersTried);
+        for(Character c : tried){
+            builder.append(c);
         }
-        return intersectionBuilder.toString();
+        return builder.toString();
     }
 
     @Override

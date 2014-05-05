@@ -4,11 +4,11 @@ import uk.ac.aber.dcs.msh4.cs124.GameView;
 import uk.ac.aber.dcs.msh4.cs124.cli.ConsoleView;
 import uk.ac.aber.dcs.msh4.cs124.gui.GraphicalView;
 
-public class Main {
+public class PirateApp {
     public static void main(String[] args){
         GameView view = new ConsoleView();
         if(args.length == 1){
-            if(args[0] == "-g"){
+            if(args[0].equals("-g")){
                 view = new GraphicalView();
             }
         }
