@@ -1,27 +1,28 @@
 package uk.ac.aber.dcs.msh4.cs124.model;
 
 import java.util.HashSet;
-
-public class HangmanGame implements GameModelInterface {
+// I decided to use hashsets to make the class more efficient,
+// and a more mathematical set theory based approach to the way the class methods work.
+// I believe this does a lot to improve the clarity and maintainability of code.
+public abstract class Hangman implements GameModelInterface {
     private final char SPACE = ' ';
     private final char HIDDEN = '*';
-    private int guessesLeft;
-    private char[] word;
-    private HashSet<Character> charactersTried = new HashSet<>();
-    private HashSet<Character> charactersExtant = new HashSet<>();
-
-    public HangmanGame(String word, int guesses){
-        this.word = word.toUpperCase().toCharArray();
-        this.guessesLeft = guesses;
-        this.charactersExtant = getCharacterSet(this.word);
-    }
+    protected int guessesLeft;
+    protected char[] word;
+    private HashSet<Character> charactersTried = new HashSet<Character>();
+    private HashSet<Character> charactersExtant = new HashSet<Character>();
 
     private HashSet<Character> getCharacterSet(char[] source){
-        HashSet<Character> set = new HashSet<>();
+        HashSet<Character> set = new HashSet<Character>();
         for(char c : source){
             if(c != SPACE) set.add(c);
         }
         return set;
+    }
+
+    protected void setWord(String word){
+        this.word = word.toUpperCase().toCharArray();
+        this.charactersExtant = getCharacterSet(this.word);
     }
 
     @Override
@@ -54,7 +55,7 @@ public class HangmanGame implements GameModelInterface {
         //the set of letters tried is the set of all letters in the word intersected with the set of all letters tried
         // = charactersTried ∩ charactersExtant
         StringBuilder intersectionBuilder = new StringBuilder();
-        HashSet<Character> intersection = new HashSet<>(this.charactersTried);
+        HashSet<Character> intersection = new HashSet<Character>(this.charactersTried);
         intersection.retainAll(this.charactersExtant);
         for(Character c : intersection){
             intersectionBuilder.append(c);
@@ -72,7 +73,7 @@ public class HangmanGame implements GameModelInterface {
         //if the charactersTried set is a superset of the charactersExtant set, we have a win
         //therefore charactersExtant \ charactersTried should be zero
         this.charactersTried.add(normalised);
-        HashSet<Character> complement = new HashSet<>(this.charactersExtant);
+        HashSet<Character> complement = new HashSet<Character>(this.charactersExtant);
         complement.removeAll(this.charactersTried);
         return complement.isEmpty();
     }
@@ -81,7 +82,7 @@ public class HangmanGame implements GameModelInterface {
     public boolean tryWord(String guess) {
         String original = new String(this.word);
         if(original.equalsIgnoreCase(guess)) return true;
-        else this.guessesLeft-=5;
+        else this.guessesLeft -= 5;
         return false;
     }
 }
